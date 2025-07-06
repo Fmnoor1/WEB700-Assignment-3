@@ -76,6 +76,26 @@ class LegoData {
       }
     });
   }
+
+  addSet(newSet) {
+    return new Promise((resolve, reject) => {
+      // Check if set_num already exists in this.sets
+      const exists = this.sets.some((set) => set.set_num === newSet.set_num);
+      if (exists) {
+        reject("Set already exists");
+      } else {
+        // If theme_id provided, try to add theme name property
+        const foundTheme = themeData.find((theme) => theme.id === newSet.theme_id);
+        const setWithTheme = {
+          ...newSet,
+          theme: foundTheme ? foundTheme.name : "Unknown"
+        };
+
+        this.sets.push(setWithTheme);
+        resolve();
+      }
+    });
+  }
 }
 
 module.exports = LegoData;
